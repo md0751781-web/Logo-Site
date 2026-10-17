@@ -89,7 +89,7 @@ function ldemb_offer_url() {
 }
 
 /**
- * Brand logo: uploaded custom logo, or a text + SVG fallback.
+ * Brand logo: the logo uploaded under Site Identity, otherwise the bundled Vector Emb logo.
  */
 function ldemb_logo() {
 	if ( has_custom_logo() ) {
@@ -97,26 +97,13 @@ function ldemb_logo() {
 		return;
 	}
 
-	$sep   = '';
-	$parts = explode( '|', ldemb_mod( 'brand_name' ), 2 );
-	if ( 1 === count( $parts ) ) {
-		$parts = explode( ' ', $parts[0], 2 );
-		$sep   = ' ';
-	}
-	?>
-	<a class="brand" href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
-		<svg class="brand__mark" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-			<circle cx="22" cy="26" r="17" fill="none" stroke="#B8202B" stroke-width="4"/>
-			<circle cx="22" cy="26" r="11.5" fill="none" stroke="#B8202B" stroke-width="1.6" stroke-dasharray="2.4 2.4"/>
-			<path d="M8 40 41 7" stroke="#101729" stroke-width="3" stroke-linecap="round"/>
-			<ellipse cx="38.5" cy="9.5" rx="1.6" ry="3.6" transform="rotate(45 38.5 9.5)" fill="#fff" stroke="#101729" stroke-width="1.4"/>
-			<path d="M39 8c6 3 6 12-2 15s-17 2-20 9" fill="none" stroke="#278D48" stroke-width="2.4" stroke-linecap="round"/>
-		</svg>
-		<span class="brand__text">
-			<span class="brand__first"><?php echo esc_html( trim( $parts[0] ) ); ?></span><?php if ( isset( $parts[1] ) ) : ?><?php echo esc_html( $sep ); ?><span class="brand__rest"><?php echo esc_html( trim( $parts[1] ) ); ?></span><?php endif; ?>
-		</span>
-	</a>
-	<?php
+	// assets/images/logo.png is 320 x 246 (transparent). Replace the file, or upload a logo in Site Identity.
+	printf(
+		'<a class="brand" href="%1$s" rel="home"><img class="brand__logo" src="%2$s" width="320" height="246" alt="%3$s"></a>',
+		esc_url( home_url( '/' ) ),
+		esc_url( LDEMB_URI . '/assets/images/logo.png' ),
+		esc_attr( ldemb_brand_name() )
+	);
 }
 
 /**
@@ -159,38 +146,68 @@ function ldemb_fallback_menu() {
 }
 
 /**
- * Hero image: uploaded attachment, or the bundled placeholder illustration.
+ * Hero slides: array of arrays( html ) — each Customizer image (LD: Hero Banner), falling back to the bundled photos.
  */
-function ldemb_hero_image() {
-	$id = absint( ldemb_mod( 'hero_image' ) );
-	if ( $id && wp_attachment_is_image( $id ) ) {
-		$alt = get_post_meta( $id, '_wp_attachment_image_alt', true );
-		echo wp_get_attachment_image(
-			$id,
-			'ldemb-hero',
-			false,
-			array(
-				'class'         => 'hero__img',
-				'loading'       => 'eager',
-				'fetchpriority' => 'high',
-				'decoding'      => 'async',
-				'sizes'         => '(max-width: 900px) 100vw, 55vw',
-				'alt'           => $alt ? $alt : __( 'Industrial embroidery machine stitching a design', 'ld-embroidery' ),
-			)
-		);
-		return;
-	}
-
-	// Placeholder: replace via Appearance → Customize → LD: Hero Banner → Hero image.
-	printf(
-		'<img class="hero__img hero__img--placeholder" src="%s" width="1200" height="900" alt="%s" fetchpriority="high" decoding="async">',
-		esc_url( LDEMB_URI . '/assets/images/hero-placeholder.svg' ),
-		esc_attr__( 'Illustration of a multi-needle embroidery machine stitching a floral design on blue fabric', 'ld-embroidery' )
+function ldemb_hero_slides() {
+	$defaults = array(
+		__( 'Row of multi-head embroidery machines stitching a floral design', 'ld-embroidery' ),
+		__( 'Embroidery machine stitching a 3D logo on a black cap', 'ld-embroidery' ),
+		__( 'Embroidery machine stitching a logo on a black t-shirt', 'ld-embroidery' ),
 	);
+
+	$slides = array();
+	foreach ( $defaults as $i => $alt_default ) {
+		$n  = $i + 1;
+		$id = absint( ldemb_mod( "hero_slide_{$n}" ) );
+		if ( 1 === $n && ! $id ) {
+			$id = absint( ldemb_mod( 'hero_image' ) ); // legacy single-image setting.
+		}
+
+		$attr = array(
+			'class'    => 'hero-slide__img',
+			'decoding' => 'async',
+			'sizes'    => '(max-width: 860px) 100vw, 56vw',
+		);
+		$attr['loading']       = 1 === $n ? 'eager' : 'lazy';
+		$attr['fetchpriority'] = 1 === $n ? 'high' : 'low';
+
+		if ( $id && wp_attachment_is_image( $id ) ) {
+			$alt         = get_post_meta( $id, '_wp_attachment_image_alt', true );
+			$attr['alt'] = $alt ? $alt : $alt_default;
+			$html        = wp_get_attachment_image( $id, 'ldemb-hero', false, $attr );
+		} else {
+			$base = LDEMB_URI . '/assets/images/hero-' . $n;
+			$html = sprintf(
+				'<img class="%1$s" src="%2$s" srcset="%2$s 1600w, %3$s 800w" sizes="%4$s" width="1600" height="900" alt="%5$s" loading="%6$s" fetchpriority="%7$s" decoding="async">',
+				esc_attr( $attr['class'] ),
+				esc_url( $base . '-1600.webp' ),
+				esc_url( $base . '-800.webp' ),
+				esc_attr( $attr['sizes'] ),
+				esc_attr( $alt_default ),
+				esc_attr( $attr['loading'] ),
+				esc_attr( $attr['fetchpriority'] )
+			);
+		}
+		if ( $html ) {
+			$slides[] = $html;
+		}
+	}
+	return $slides;
 }
 
 /**
- * Brand name as plain text (no colour separator), for the footer.
+ * Favicon fallback: the bundled symbol, only when no Site Icon is set in Customize.
+ */
+function ldemb_favicon() {
+	if ( has_site_icon() ) {
+		return;
+	}
+	printf( '<link rel="icon" href="%s" type="image/png">' . "\n", esc_url( LDEMB_URI . '/assets/images/favicon.png' ) );
+}
+add_action( 'wp_head', 'ldemb_favicon', 2 );
+
+/**
+ * Brand name as plain text (footer copyright, logo alt text).
  */
 function ldemb_brand_name() {
 	return trim( str_replace( '|', '', ldemb_mod( 'brand_name' ) ) );

@@ -27,7 +27,7 @@ function ldemb_settings() {
 		'ldemb_header'   => array(
 			'title'  => __( 'LD: Header', 'ld-embroidery' ),
 			'fields' => array(
-				'brand_name'        => array( __( 'Logo text (used when no logo image is uploaded)', 'ld-embroidery' ), 'Vector|emb', 'text', __( 'Use "|" to split the two colours, e.g. Vector|emb (red + navy). Also shown in the footer copyright. Does not change the Site Title in Settings → General.', 'ld-embroidery' ) ),
+				'brand_name'        => array( __( 'Brand name (footer copyright and logo alt text)', 'ld-embroidery' ), 'Vector Emb', 'text', __( 'The header logo is the bundled Vector Emb logo (or the one uploaded under Site Identity). Does not change the Site Title in Settings → General.', 'ld-embroidery' ) ),
 				'header_badge_show' => array( __( 'Show turnaround badge', 'ld-embroidery' ), true, 'checkbox' ),
 				'header_badge_text' => array( __( 'Turnaround badge text', 'ld-embroidery' ), __( '24h Turnaround', 'ld-embroidery' ), 'text' ),
 				'header_cta_label'  => array( __( 'Header button text', 'ld-embroidery' ), __( 'Get Quote', 'ld-embroidery' ), 'text' ),
@@ -47,7 +47,10 @@ function ldemb_settings() {
 				'hero_btn_url'     => array( __( 'Primary button: URL', 'ld-embroidery' ), '', 'url', __( 'Used when no product ID is set. Empty = order/quote page or the WooCommerce shop.', 'ld-embroidery' ) ),
 				'hero_btn2_label'  => array( __( 'Secondary button text', 'ld-embroidery' ), __( 'Upload Your Design', 'ld-embroidery' ), 'text' ),
 				'upload_url'       => array( __( 'Upload page URL', 'ld-embroidery' ), '', 'url', __( 'Empty = page with slug "upload-your-design", "upload" or the quote page.', 'ld-embroidery' ) ),
-				'hero_image'       => array( __( 'Hero image', 'ld-embroidery' ), 0, 'media', __( 'Landscape photo of an embroidery machine, at least 1400px wide. WebP recommended.', 'ld-embroidery' ) ),
+				'hero_slide_1'     => array( __( 'Slider image 1', 'ld-embroidery' ), 0, 'media', __( 'Landscape photo, at least 1400 px wide (WebP/JPG). Empty = the bundled photo.', 'ld-embroidery' ) ),
+				'hero_slide_2'     => array( __( 'Slider image 2', 'ld-embroidery' ), 0, 'media', __( 'Empty = the bundled photo.', 'ld-embroidery' ) ),
+				'hero_slide_3'     => array( __( 'Slider image 3', 'ld-embroidery' ), 0, 'media', __( 'Empty = the bundled photo.', 'ld-embroidery' ) ),
+				'hero_interval'    => array( __( 'Seconds per slide (0 = no auto-play)', 'ld-embroidery' ), 5, 'number' ),
 			),
 		),
 		'ldemb_trust'    => array(

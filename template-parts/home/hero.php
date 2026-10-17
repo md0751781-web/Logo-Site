@@ -11,9 +11,23 @@ $ldemb_small = ldemb_mod( 'hero_btn_small' );
 $ldemb_main  = ldemb_mod( 'hero_btn_label' );
 $ldemb_btn2  = ldemb_mod( 'hero_btn2_label' );
 ?>
+<?php $ldemb_slides = ldemb_hero_slides(); ?>
 <section class="hero" aria-labelledby="hero-title">
-	<div class="hero__media">
-		<?php ldemb_hero_image(); ?>
+	<div class="hero__media hero-slider" data-hero-slider data-interval="<?php echo esc_attr( max( 0, absint( ldemb_mod( 'hero_interval' ) ) ) ); ?>" role="region" aria-roledescription="carousel" aria-label="<?php esc_attr_e( 'Embroidery machines at work', 'ld-embroidery' ); ?>">
+		<div class="hero-slider__track">
+			<?php foreach ( $ldemb_slides as $ldemb_i => $ldemb_slide ) : ?>
+				<div class="hero-slide<?php echo 0 === $ldemb_i ? ' is-active' : ''; ?>" role="group" aria-roledescription="slide" aria-label="<?php echo esc_attr( sprintf( /* translators: 1: slide number, 2: slide count */ __( 'Slide %1$d of %2$d', 'ld-embroidery' ), $ldemb_i + 1, count( $ldemb_slides ) ) ); ?>"<?php echo 0 === $ldemb_i ? '' : ' aria-hidden="true"'; ?>>
+					<?php echo $ldemb_slide; // phpcs:ignore WordPress.Security.EscapeOutput -- built with esc_* / wp_get_attachment_image. ?>
+				</div>
+			<?php endforeach; ?>
+		</div>
+		<?php if ( count( $ldemb_slides ) > 1 ) : ?>
+			<div class="hero-slider__dots" role="group" aria-label="<?php esc_attr_e( 'Choose slide', 'ld-embroidery' ); ?>">
+				<?php foreach ( $ldemb_slides as $ldemb_i => $ldemb_slide ) : ?>
+					<button type="button" class="hero-slider__dot" data-slide="<?php echo (int) $ldemb_i; ?>" aria-label="<?php echo esc_attr( sprintf( /* translators: %d: slide number */ __( 'Show slide %d', 'ld-embroidery' ), $ldemb_i + 1 ) ); ?>"<?php echo 0 === $ldemb_i ? ' aria-current="true"' : ''; ?>></button>
+				<?php endforeach; ?>
+			</div>
+		<?php endif; ?>
 	</div>
 
 	<div class="container hero__inner">

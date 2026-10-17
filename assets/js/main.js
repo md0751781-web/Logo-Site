@@ -61,3 +61,102 @@
 		}
 	} );
 } )();
+
+/* Hero slider: crossfade, auto-play (paused on hover/focus and for reduced-motion users), dots, swipe. */
+( function () {
+	var root = document.querySelector( '[data-hero-slider]' );
+	if ( ! root ) {
+		return;
+	}
+	var slides = root.querySelectorAll( '.hero-slide' );
+	var dots = root.querySelectorAll( '.hero-slider__dot' );
+	if ( slides.length < 2 ) {
+		return;
+	}
+
+	var index = 0;
+	var timer = null;
+	var hovering = false;
+	var keyboardFocus = false;
+	var seconds = parseInt( root.getAttribute( 'data-interval' ), 10 );
+	var reduce = window.matchMedia && window.matchMedia( '(prefers-reduced-motion: reduce)' ).matches;
+	var autoplay = seconds > 0 && ! reduce;
+
+	function show( n ) {
+		index = ( n + slides.length ) % slides.length;
+		slides.forEach( function ( slide, i ) {
+			var active = i === index;
+			slide.classList.toggle( 'is-active', active );
+			slide.setAttribute( 'aria-hidden', active ? 'false' : 'true' );
+		} );
+		dots.forEach( function ( dot, i ) {
+			if ( i === index ) {
+				dot.setAttribute( 'aria-current', 'true' );
+			} else {
+				dot.removeAttribute( 'aria-current' );
+			}
+		} );
+	}
+
+	function stop() {
+		if ( timer ) {
+			window.clearInterval( timer );
+			timer = null;
+		}
+	}
+
+	// Auto-play only while the pointer is away, keyboard focus is elsewhere and the tab is visible.
+	function start() {
+		stop();
+		if ( autoplay && ! hovering && ! keyboardFocus && ! document.hidden ) {
+			timer = window.setInterval( function () {
+				show( index + 1 );
+			}, seconds * 1000 );
+		}
+	}
+
+	dots.forEach( function ( dot ) {
+		dot.addEventListener( 'click', function () {
+			show( parseInt( dot.getAttribute( 'data-slide' ), 10 ) );
+			start();
+		} );
+	} );
+
+	root.addEventListener( 'mouseenter', function () {
+		hovering = true;
+		start();
+	} );
+	root.addEventListener( 'mouseleave', function () {
+		hovering = false;
+		start();
+	} );
+	root.addEventListener( 'focusin', function ( e ) {
+		// A mouse click also focuses a button; only keyboard focus should pause the slider.
+		keyboardFocus = !! ( e.target.matches && e.target.matches( ':focus-visible' ) );
+		start();
+	} );
+	root.addEventListener( 'focusout', function () {
+		keyboardFocus = false;
+		start();
+	} );
+	document.addEventListener( 'visibilitychange', start );
+
+	// Swipe on touch screens.
+	var startX = null;
+	root.addEventListener( 'touchstart', function ( e ) {
+		startX = e.changedTouches[ 0 ].clientX;
+	}, { passive: true } );
+	root.addEventListener( 'touchend', function ( e ) {
+		if ( null === startX ) {
+			return;
+		}
+		var dx = e.changedTouches[ 0 ].clientX - startX;
+		startX = null;
+		if ( Math.abs( dx ) > 40 ) {
+			show( index + ( dx < 0 ? 1 : -1 ) );
+			start();
+		}
+	}, { passive: true } );
+
+	start();
+} )();

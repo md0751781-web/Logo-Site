@@ -1,6 +1,6 @@
-# LD Embroidery – WordPress Theme
+# Vector Emb – WordPress Theme
 
-Lightweight, WooCommerce-ready theme for **LD Embroidery** (embroidery digitizing).
+Lightweight, WooCommerce-ready theme for **Vector Emb** (embroidery digitizing).
 **Phase 1:** homepage + reusable header/footer. **Phase 2:** Order (artwork upload), Services, Portfolio and Contact pages.
 
 ```
@@ -25,7 +25,8 @@ assets/css/pages.css, assets/js/pages.js   inner-page styles/scripts (loaded onl
 assets/css/shop.css                shop/category styles (loaded on WooCommerce pages only)
 woocommerce.php                    wrapper so shop/product pages use the theme header/footer
 assets/css/main.css, assets/js/main.js
-assets/images/hero-placeholder.svg placeholder illustration – replace with the real photo
+assets/images/logo.png, favicon.png   bundled Vector Emb logo (transparent) and favicon
+assets/images/hero-{1,2,3}-{1600,800}.webp   the three bundled hero slider photos
 ```
 
 ## Deploy (Hostinger → GitHub)
@@ -42,9 +43,8 @@ After activation the Dashboard shows a **"LD Embroidery theme setup"** notice li
 
 | What | Where |
 |---|---|
-| **Logo text** | Customize → **LD: Header → Logo text** (default `Vector|emb`, `|` splits the red/navy colours). Used when no logo image is uploaded, and in the footer. The browser-tab title comes from *Settings → General → Site Title*. |
-| **Logo** | Appearance → Customize → Site Identity → Logo (PNG/SVG/WebP, ~320×96, transparent background). Without it a text + icon fallback is shown. |
-| **Hero photo** | Customize → **LD: Hero Banner → Hero image**. Landscape, at least 1400 px wide, WebP recommended. Set the image's *Alt text* in the Media Library. |
+| **Logo** | The bundled **Vector Emb** logo (`assets/images/logo.png`, transparent) is shown by default. To use another one: Appearance → Customize → Site Identity → Logo (it replaces the bundled file). Browser-tab title: *Settings → General → Site Title*; favicon: Site Identity → Site Icon (the bundled symbol is used until then). |
+| **Hero slider** | Three crossfading photos with dots, swipe and auto-play (pauses on hover/keyboard focus, off for reduced-motion users). Replace any of them under Customize → **LD: Hero Banner → Slider image 1/2/3** (landscape, ≥ 1400 px wide) and set the seconds per slide (0 = no auto-play). Empty = the bundled photos. |
 | **Menu** | Appearance → Menus → create *Home, Services, Pricing, How It Works, Portfolio, Contact* → location **Primary Menu**. The current page is shown in red. |
 | **Get Quote link** | Customize → **LD: Header → Quote page URL**. If empty, a page with slug `get-quote`, `quote` or `contact` is used automatically. |
 | **Upload Your Design link** | Customize → **LD: Hero Banner → Upload page URL** (or a page with slug `upload-your-design` / `upload`). |
@@ -106,3 +106,7 @@ The homepage shows the newest published WooCommerce products between *Services* 
 - The shop template was verified against the **real WooCommerce 11.3 source** (not only mock markup): 4 per row at ≥1200 px, AJAX add-to-cart updates the header cart count, WooCommerce's notices wrapper, sorting, result count and pagination all work inside the grid.
 - Product, cart, checkout and account pages get the theme's red buttons, prices and notices (`assets/css/shop.css`).
 - **Deploy check:** *Appearance → Themes → LD Embroidery* should show **Version 2.1.0** (or newer). If the shop still looks different, purge every cache layer (host cache, LiteSpeed/WP Rocket/10Web Booster, Cloudflare) — they can serve old HTML and old CSS bundles.
+
+## Colours
+
+The palette comes from the Vector Emb logo and is defined once in `assets/css/main.css` (`:root`): primary **blue `#0b73bd`** (buttons, links, prices, active menu, category bar, badges), accent **red `#be1c2b`** (sale badge, cart count, required-field and error states), near-black text `#101729` and a deep-blue footer `#0d2a47`. Green is only used for success messages.

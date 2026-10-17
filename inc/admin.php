@@ -16,12 +16,6 @@ function ldemb_setup_notice() {
 	}
 
 	$todo = array();
-	if ( ! has_custom_logo() ) {
-		$todo[] = __( 'Upload the LD Embroidery logo (Site Identity).', 'ld-embroidery' );
-	}
-	if ( ! ldemb_mod( 'hero_image' ) ) {
-		$todo[] = __( 'Set the hero photo (LD: Hero Banner → Hero image). A placeholder illustration is shown until then.', 'ld-embroidery' );
-	}
 	if ( ! ldemb_mod( 'quote_url' ) && ! ldemb_page_url( array( 'order', 'get-quote', 'quote', 'contact' ) ) ) {
 		$todo[] = __( 'Set the quote page (LD: Header → Quote page URL). "Get Quote" currently points to the services section.', 'ld-embroidery' );
 	}
@@ -45,7 +39,7 @@ function ldemb_setup_notice() {
 	}
 	?>
 	<div class="notice notice-info">
-		<p><strong><?php esc_html_e( 'LD Embroidery theme setup', 'ld-embroidery' ); ?></strong></p>
+		<p><strong><?php esc_html_e( 'Vector Emb theme setup', 'ld-embroidery' ); ?></strong></p>
 		<ul style="list-style:disc;padding-left:20px">
 			<?php foreach ( $todo as $item ) : ?>
 				<li><?php echo esc_html( $item ); ?></li>
