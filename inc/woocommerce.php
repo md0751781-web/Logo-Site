@@ -117,7 +117,10 @@ function ldemb_home_products() {
 	$ids       = get_transient( $cache_key );
 	if ( false === $ids ) {
 		$ids = wc_get_products( array_merge( $args, array( 'return' => 'ids' ) ) );
-		set_transient( $cache_key, $ids, 10 * MINUTE_IN_SECONDS );
+		if ( $ids ) {
+			// Never cache "no products": the first visit before an import must not hide the section afterwards.
+			set_transient( $cache_key, $ids, 10 * MINUTE_IN_SECONDS );
+		}
 	}
 
 	$products = array();

@@ -422,6 +422,7 @@ h1, h2, h3 { line-height: 1.15; margin: 0 0 0.5em; }
 .product-card__price del { color: var(--muted); font-weight: 500; font-size: 15px; }
 .product-card__price ins { text-decoration: none; }
 .product-card__body .btn { margin-top: auto; }
+.products-hint { margin: 0; padding: 16px 20px; border: 2px dashed #d4d7de; border-radius: var(--radius-sm); background: var(--white); color: var(--muted); text-align: center; }
 .products__more { margin: 40px 0 0; text-align: center; }
 .products .section-head { margin-bottom: 36px; }
 

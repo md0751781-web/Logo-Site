@@ -6,12 +6,19 @@
  * @package LD_Embroidery
  */
 
-if ( ! ldemb_mod( 'products_show' ) ) {
-	return;
-}
-
-$ldemb_products = ldemb_home_products();
+$ldemb_products = ldemb_mod( 'products_show' ) ? ldemb_home_products() : array();
 if ( ! $ldemb_products ) {
+	// Visitors see nothing; site admins get a note explaining why the section is hidden.
+	if ( current_user_can( 'edit_theme_options' ) ) {
+		if ( ! ldemb_mod( 'products_show' ) ) {
+			$ldemb_hint = __( 'The products section is switched off (Customize → LD: Home Products).', 'ld-embroidery' );
+		} elseif ( ! ldemb_wc_active() ) {
+			$ldemb_hint = __( 'WooCommerce is not active, so no products can be shown.', 'ld-embroidery' );
+		} else {
+			$ldemb_hint = __( 'No visible products yet. A product appears here when it is Published, visible in the catalog and has a regular price. If you just imported, check WooCommerce → Products.', 'ld-embroidery' );
+		}
+		echo '<section class="section products"><div class="container"><p class="products-hint">' . esc_html( $ldemb_hint ) . ' <em>' . esc_html__( '(Only site admins see this note.)', 'ld-embroidery' ) . '</em></p></div></section>';
+	}
 	return;
 }
 
