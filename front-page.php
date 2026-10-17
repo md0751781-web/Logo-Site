@@ -1,6 +1,6 @@
 <?php
 /**
- * Homepage: hero, trust badges, services, launch offer.
+ * Homepage: hero, trust badges, services, products, launch offer.
  *
  * Content is edited under Appearance → Customize → "LD: …" sections.
  * If a static front page has content, it is shown after the services.
@@ -13,6 +13,7 @@ get_header();
 get_template_part( 'template-parts/home/hero' );
 get_template_part( 'template-parts/home/trust' );
 get_template_part( 'template-parts/home/services' );
+get_template_part( 'template-parts/home/products' );
 get_template_part( 'template-parts/home/offer' );
 
 if ( 'page' === get_option( 'show_on_front' ) ) :

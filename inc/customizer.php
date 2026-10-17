@@ -75,6 +75,18 @@ function ldemb_settings() {
 				'service_4_text'    => array( __( 'Card 4 text', 'ld-embroidery' ), __( 'Large back embroidery for jackets, hoodies & workwear. Detailed precision.', 'ld-embroidery' ), 'textarea' ),
 			),
 		),
+		'ldemb_products' => array(
+			'title'  => __( 'LD: Home Products', 'ld-embroidery' ),
+			'fields' => array(
+				'products_show'     => array( __( 'Show products on the homepage', 'ld-embroidery' ), true, 'checkbox', __( 'Real WooCommerce products. The section hides itself while there are none.', 'ld-embroidery' ) ),
+				'products_title'    => array( __( 'Heading', 'ld-embroidery' ), __( 'Latest Embroidery Designs', 'ld-embroidery' ), 'text' ),
+				'products_subtitle' => array( __( 'Supporting text', 'ld-embroidery' ), __( 'Ready-to-stitch embroidery files, available to download right after purchase.', 'ld-embroidery' ), 'text' ),
+				'products_count'    => array( __( 'Number of products (4–24)', 'ld-embroidery' ), 8, 'number' ),
+				'products_category' => array( __( 'Only from category (slug, optional)', 'ld-embroidery' ), '', 'text', __( 'e.g. best-3dpuff-embroidery-logo. Empty = newest products from all categories.', 'ld-embroidery' ) ),
+				'products_button'   => array( __( '"View all" button text', 'ld-embroidery' ), __( 'View All Designs', 'ld-embroidery' ), 'text' ),
+				'products_cart'     => array( __( 'Add to cart button text', 'ld-embroidery' ), __( 'Add to Cart', 'ld-embroidery' ), 'text' ),
+			),
+		),
 		'ldemb_offer'    => array(
 			'title'  => __( 'LD: Launch Offer', 'ld-embroidery' ),
 			'fields' => array(
