@@ -62,6 +62,10 @@ function ldemb_enqueue_cart_fragments() {
 	if ( wp_script_is( 'wc-cart-fragments', 'registered' ) ) {
 		wp_enqueue_script( 'wc-cart-fragments' );
 	}
+	// The homepage product cards use WooCommerce's AJAX add-to-cart button.
+	if ( is_front_page() && wp_script_is( 'wc-add-to-cart', 'registered' ) ) {
+		wp_enqueue_script( 'wc-add-to-cart' );
+	}
 }
 add_action( 'wp_enqueue_scripts', 'ldemb_enqueue_cart_fragments', 20 );
 
@@ -103,7 +107,7 @@ function ldemb_home_products() {
 	$args = array(
 		'status'     => 'publish',
 		'visibility' => 'catalog',
-		'limit'      => max( 3, min( 24, absint( ldemb_mod( 'products_count' ) ) ) ),
+		'limit'      => max( 4, min( 24, absint( ldemb_mod( 'products_count' ) ) ) ),
 		'orderby'    => 'date',
 		'order'      => 'DESC',
 	);

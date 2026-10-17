@@ -23,57 +23,40 @@ if ( ! $ldemb_products ) {
 }
 
 $ldemb_subtitle = ldemb_mod( 'products_subtitle' );
-$ldemb_cart     = ldemb_mod( 'products_cart' );
 $ldemb_shop     = ldemb_shop_url();
 $ldemb_all      = ldemb_mod( 'products_button' );
 ?>
 <section id="products" class="section home-products" aria-labelledby="products-title">
-	<div class="container">
-		<header class="section-head">
-			<h2 id="products-title" class="section-title"><?php echo esc_html( ldemb_mod( 'products_title' ) ); ?></h2>
-			<?php if ( $ldemb_subtitle ) : ?>
-				<p class="section-subtitle"><?php echo esc_html( $ldemb_subtitle ); ?></p>
+	<?php /* Same layout and the same WooCommerce product card as the shop page (see template-parts/shop/archive.php). */ ?>
+	<div class="container container--wide shop-layout woocommerce">
+		<?php ldemb_shop_sidebar(); ?>
+
+		<div class="shop-main">
+			<header class="shop-head">
+				<h2 id="products-title" class="shop-head__title"><?php echo esc_html( ldemb_mod( 'products_title' ) ); ?></h2>
+				<?php if ( $ldemb_subtitle ) : ?>
+					<p class="shop-head__text"><?php echo esc_html( $ldemb_subtitle ); ?></p>
+				<?php endif; ?>
+			</header>
+
+			<?php
+			woocommerce_product_loop_start();
+			foreach ( $ldemb_products as $ldemb_product ) {
+				// WooCommerce's card prints the title and link of the *current post* and reads the $product global,
+				// exactly as in the shop loop, so both must point at this product.
+				$GLOBALS['post']    = get_post( $ldemb_product->get_id() ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+				$GLOBALS['product'] = $ldemb_product; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
+				setup_postdata( $GLOBALS['post'] );
+				wc_get_template_part( 'content', 'product' );
+			}
+			woocommerce_product_loop_end();
+			wp_reset_postdata();
+			unset( $GLOBALS['product'] );
+			?>
+
+			<?php if ( $ldemb_shop && $ldemb_all ) : ?>
+				<p class="products__more"><a class="btn btn--outline-green btn--lg" href="<?php echo esc_url( $ldemb_shop ); ?>"><?php echo esc_html( $ldemb_all ); ?><?php echo ldemb_icon( 'arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></a></p>
 			<?php endif; ?>
-		</header>
-
-		<ul class="products__grid">
-			<?php foreach ( $ldemb_products as $ldemb_i => $ldemb_product ) : ?>
-				<li class="product-card">
-					<a class="product-card__media" href="<?php echo esc_url( $ldemb_product->get_permalink() ); ?>" tabindex="-1" aria-hidden="true">
-						<?php
-						echo wp_kses_post(
-							$ldemb_product->get_image(
-								'woocommerce_single',
-								array(
-									'loading'  => $ldemb_i < 3 ? 'eager' : 'lazy',
-									'decoding' => 'async',
-									'class'    => 'product-card__img',
-									'sizes'    => '(max-width: 640px) 50vw, 340px',
-								)
-							)
-						);
-						?>
-						<?php if ( $ldemb_product->is_downloadable() ) : ?>
-							<span class="product-card__tag"><?php echo ldemb_icon( 'cloud' ); // phpcs:ignore WordPress.Security.EscapeOutput ?><?php esc_html_e( 'Instant download', 'ld-embroidery' ); ?></span>
-						<?php endif; ?>
-					</a>
-					<div class="product-card__body">
-						<h3 class="product-card__title"><a href="<?php echo esc_url( $ldemb_product->get_permalink() ); ?>"><?php echo esc_html( $ldemb_product->get_name() ); ?></a></h3>
-						<div class="product-card__foot">
-							<p class="product-card__price"><?php echo wp_kses_post( $ldemb_product->get_price_html() ); ?></p>
-							<?php if ( $ldemb_cart && $ldemb_product->is_purchasable() && $ldemb_product->is_in_stock() ) : ?>
-								<a class="btn btn--red" href="<?php echo esc_url( $ldemb_product->add_to_cart_url() ); ?>" rel="nofollow">
-									<?php echo esc_html( $ldemb_cart ); ?><span class="screen-reader-text">: <?php echo esc_html( $ldemb_product->get_name() ); ?></span>
-								</a>
-							<?php endif; ?>
-						</div>
-					</div>
-				</li>
-			<?php endforeach; ?>
-		</ul>
-
-		<?php if ( $ldemb_shop && $ldemb_all ) : ?>
-			<p class="products__more"><a class="btn btn--outline-green btn--lg" href="<?php echo esc_url( $ldemb_shop ); ?>"><?php echo esc_html( $ldemb_all ); ?><?php echo ldemb_icon( 'arrow' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></a></p>
-		<?php endif; ?>
+		</div>
 	</div>
 </section>
