@@ -402,8 +402,8 @@ h1, h2, h3 { line-height: 1.15; margin: 0 0 0.5em; }
 }
 
 /* ---------- Products ---------- */
-.products { background: var(--gray-bg); padding-top: 24px; }
-.products .section-head { margin-bottom: 40px; }
+.home-products { background: var(--gray-bg); padding-top: 24px; }
+.home-products .section-head { margin-bottom: 40px; }
 .products__grid {
 	display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px;
 	max-width: 1060px; margin: 0 auto; padding: 0; list-style: none;

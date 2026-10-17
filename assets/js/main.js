@@ -41,3 +41,23 @@
 		}
 	} );
 } )();
+
+/* Shop: the category panel is always open on desktop and collapsed by default on phones. */
+( function () {
+	var cats = document.querySelector( '.shop-cats' );
+	if ( ! cats || ! window.matchMedia ) {
+		return;
+	}
+	var desktop = window.matchMedia( '(min-width: 900px)' );
+	var sync = function () {
+		cats.open = desktop.matches;
+	};
+	sync();
+	desktop.addEventListener( 'change', sync );
+	// A closed panel on desktop would hide the navigation, so the heading only toggles on small screens.
+	cats.querySelector( 'summary' ).addEventListener( 'click', function ( e ) {
+		if ( desktop.matches ) {
+			e.preventDefault();
+		}
+	} );
+} )();

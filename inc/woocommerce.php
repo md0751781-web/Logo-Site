@@ -151,3 +151,98 @@ add_action( 'woocommerce_update_product', 'ldemb_flush_home_products' );
 add_action( 'woocommerce_new_product', 'ldemb_flush_home_products' );
 add_action( 'woocommerce_delete_product', 'ldemb_flush_home_products' );
 add_action( 'customize_save_after', 'ldemb_flush_home_products' );
+
+/**
+ * Shop grid: 4 products per row, 24 per page (six full rows).
+ */
+add_filter( 'loop_shop_columns', function () {
+	return 4;
+} );
+add_filter( 'loop_shop_per_page', function () {
+	return 24;
+} );
+
+/**
+ * Category count: WooCommerce's cached count of visible products (including sub-categories).
+ */
+function ldemb_category_count( $term ) {
+	$count = get_term_meta( $term->term_id, 'product_count_product_cat', true );
+	return '' === $count ? (int) $term->count : (int) $count;
+}
+
+/**
+ * One level of the category list; sub-categories are only expanded inside the active branch.
+ */
+function ldemb_shop_category_items( $parent, $active_ids, $depth = 0 ) {
+	$terms = get_terms(
+		array(
+			'taxonomy'   => 'product_cat',
+			'parent'     => $parent,
+			'hide_empty' => true,
+			'pad_counts' => true, // a parent whose products all sit in sub-categories must stay visible.
+			'exclude'    => array( (int) get_option( 'default_product_cat' ) ),
+			'orderby'    => 'name',
+		)
+	);
+	if ( is_wp_error( $terms ) || ! $terms ) {
+		return;
+	}
+
+	echo '<ul class="' . ( $depth ? 'shop-cats__sub' : 'shop-cats__list' ) . '">';
+	foreach ( $terms as $term ) {
+		$is_current = $active_ids && $term->term_id === $active_ids[0];
+		$in_branch  = in_array( $term->term_id, $active_ids, true );
+		printf(
+			'<li class="shop-cats__item%1$s"><a href="%2$s"%3$s><span class="shop-cats__name">%4$s</span> <span class="shop-cats__count">%5$d</span></a>',
+			$in_branch ? ' is-active' : '',
+			esc_url( get_term_link( $term ) ),
+			$is_current ? ' aria-current="page"' : '',
+			esc_html( $term->name ),
+			(int) ldemb_category_count( $term )
+		);
+		if ( $in_branch && $depth < 2 ) {
+			ldemb_shop_category_items( $term->term_id, $active_ids, $depth + 1 );
+		}
+		echo '</li>';
+	}
+	echo '</ul>';
+}
+
+/**
+ * Left sidebar with the product categories (a collapsible panel on phones).
+ */
+function ldemb_shop_sidebar() {
+	if ( ! taxonomy_exists( 'product_cat' ) ) {
+		return;
+	}
+
+	$active_ids = array();
+	if ( is_product_category() ) {
+		$current = get_queried_object();
+		if ( $current && ! is_wp_error( $current ) ) {
+			$active_ids = array_merge( array( $current->term_id ), get_ancestors( $current->term_id, 'product_cat', 'taxonomy' ) );
+		}
+	}
+
+	$shop_url = ldemb_shop_url();
+	$total    = wp_count_posts( 'product' );
+	$total    = isset( $total->publish ) ? (int) $total->publish : 0;
+	?>
+	<aside class="shop-sidebar" aria-label="<?php esc_attr_e( 'Product categories', 'ld-embroidery' ); ?>">
+		<details class="shop-cats" open>
+			<summary class="shop-cats__title"><?php esc_html_e( 'Design Category', 'ld-embroidery' ); ?></summary>
+			<?php if ( $shop_url ) : ?>
+				<ul class="shop-cats__list shop-cats__list--all">
+					<li class="shop-cats__item<?php echo $active_ids || ! is_shop() ? '' : ' is-active'; ?>">
+						<a href="<?php echo esc_url( $shop_url ); ?>"<?php echo $active_ids || ! is_shop() ? '' : ' aria-current="page"'; ?>>
+							<span class="shop-cats__name"><?php esc_html_e( 'All Designs', 'ld-embroidery' ); ?></span>
+							<span class="shop-cats__count"><?php echo (int) $total; ?></span>
+						</a>
+					</li>
+				</ul>
+			<?php endif; ?>
+			<?php ldemb_shop_category_items( 0, $active_ids ); ?>
+		</details>
+	</aside>
+	<?php
+}

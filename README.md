@@ -11,6 +11,7 @@ front-page.php                     homepage → template-parts/home/*.php
   template-parts/home/trust.php      trust badges (hidden by default)
   template-parts/home/services.php   4 service cards
   template-parts/home/products.php   newest WooCommerce products (auto-hidden when none)
+  template-parts/shop/archive.php    shop + category pages: category sidebar and 4-per-row product grid
   template-parts/home/offer.php      launch offer + file formats (hidden by default)
 inc/customizer.php                 all editable homepage content + defaults
 inc/woocommerce.php                cart count, account link, cart fragments, payment methods
@@ -21,6 +22,7 @@ page-order.php / page-services.php / page-portfolio.php / page-contact.php   inn
 inc/content-types.php              Portfolio + Services post types (wp-admin menus)
 inc/requests.php                   Order & Contact form handling, private artwork storage, "Requests" inbox
 assets/css/pages.css, assets/js/pages.js   inner-page styles/scripts (loaded only on those pages)
+assets/css/shop.css                shop/category styles (loaded on WooCommerce pages only)
 woocommerce.php                    wrapper so shop/product pages use the theme header/footer
 assets/css/main.css, assets/js/main.js
 assets/images/hero-placeholder.svg placeholder illustration – replace with the real photo
@@ -94,3 +96,10 @@ The homepage shows the newest published WooCommerce products between *Services* 
 - Products with no price or no download file are imported as **drafts**, so customers can't buy an empty download.
 - Downloadable files must be reachable by this site. If the shop moves to a new server, copy `wp-content/uploads/woocommerce_uploads/` first.
 - Don't commit the CSV files to this repository (they contain paid download links).
+
+## Shop & category pages
+
+`woocommerce.php` renders the shop and every product-category page as **category sidebar (left) + product grid (right)**: 4 products per row on desktop (≥1200 px), 3 on tablet, 2 on phones, where the category list becomes a collapsible panel. It uses WooCommerce's own loop and hooks (sorting, result count, add-to-cart, pagination, sale badge), so nothing in WooCommerce is replaced. Products per page: 24 (six full rows).
+- The sidebar lists the product categories with their product counts; sub-categories open inside the active branch. Manage categories under *Products → Categories*.
+- `assets/css/shop.css` deliberately overrides WooCommerce's float/width rules and its `ul.products::before/::after` clear-fix boxes (they would become grid cells).
+- **CSS/JS versions follow each file's modification time** (`?ver=…`), so every deploy is picked up by browsers and caching plugins. If the site still looks unstyled after a deploy, purge the cache plugin / host cache (Hostinger → Cache Manager / LiteSpeed).

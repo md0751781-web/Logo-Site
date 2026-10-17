@@ -17,7 +17,7 @@ if ( ! $ldemb_products ) {
 		} else {
 			$ldemb_hint = __( 'No visible products yet. A product appears here when it is Published, visible in the catalog and has a regular price. If you just imported, check WooCommerce → Products.', 'ld-embroidery' );
 		}
-		echo '<section class="section products"><div class="container"><p class="products-hint">' . esc_html( $ldemb_hint ) . ' <em>' . esc_html__( '(Only site admins see this note.)', 'ld-embroidery' ) . '</em></p></div></section>';
+		echo '<section class="section home-products"><div class="container"><p class="products-hint">' . esc_html( $ldemb_hint ) . ' <em>' . esc_html__( '(Only site admins see this note.)', 'ld-embroidery' ) . '</em></p></div></section>';
 	}
 	return;
 }
@@ -27,7 +27,7 @@ $ldemb_cart     = ldemb_mod( 'products_cart' );
 $ldemb_shop     = ldemb_shop_url();
 $ldemb_all      = ldemb_mod( 'products_button' );
 ?>
-<section id="products" class="section products" aria-labelledby="products-title">
+<section id="products" class="section home-products" aria-labelledby="products-title">
 	<div class="container">
 		<header class="section-head">
 			<h2 id="products-title" class="section-title"><?php echo esc_html( ldemb_mod( 'products_title' ) ); ?></h2>

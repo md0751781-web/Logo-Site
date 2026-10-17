@@ -43,15 +43,28 @@ function ldemb_setup() {
 }
 add_action( 'after_setup_theme', 'ldemb_setup' );
 
+/**
+ * Cache-busting version for a theme file: its modification time, so every deploy
+ * makes browsers and caching plugins fetch the new CSS/JS (a fixed number would not).
+ */
+function ldemb_ver( $relative_path ) {
+	$file = LDEMB_DIR . '/' . ltrim( $relative_path, '/' );
+	return file_exists( $file ) ? (string) filemtime( $file ) : LDEMB_VERSION;
+}
+
 function ldemb_assets() {
 	wp_enqueue_style( 'ldemb-fonts', 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap', array(), null );
-	wp_enqueue_style( 'ldemb-style', get_stylesheet_uri(), array(), LDEMB_VERSION );
-	wp_enqueue_style( 'ldemb-main', LDEMB_URI . '/assets/css/main.css', array( 'ldemb-style' ), LDEMB_VERSION );
-	wp_enqueue_script( 'ldemb-main', LDEMB_URI . '/assets/js/main.js', array(), LDEMB_VERSION, true );
+	wp_enqueue_style( 'ldemb-style', get_stylesheet_uri(), array(), ldemb_ver( 'style.css' ) );
+	wp_enqueue_style( 'ldemb-main', LDEMB_URI . '/assets/css/main.css', array( 'ldemb-style' ), ldemb_ver( 'assets/css/main.css' ) );
+	wp_enqueue_script( 'ldemb-main', LDEMB_URI . '/assets/js/main.js', array(), ldemb_ver( 'assets/js/main.js' ), true );
 
 	if ( is_page( array( 'order', 'services', 'portfolio', 'contact' ) ) || is_page_template( array( 'page-order.php', 'page-services.php', 'page-portfolio.php', 'page-contact.php' ) ) ) {
-		wp_enqueue_style( 'ldemb-pages', LDEMB_URI . '/assets/css/pages.css', array( 'ldemb-main' ), LDEMB_VERSION );
-		wp_enqueue_script( 'ldemb-pages', LDEMB_URI . '/assets/js/pages.js', array(), LDEMB_VERSION, true );
+		wp_enqueue_style( 'ldemb-pages', LDEMB_URI . '/assets/css/pages.css', array( 'ldemb-main' ), ldemb_ver( 'assets/css/pages.css' ) );
+		wp_enqueue_script( 'ldemb-pages', LDEMB_URI . '/assets/js/pages.js', array(), ldemb_ver( 'assets/js/pages.js' ), true );
+	}
+
+	if ( function_exists( 'is_woocommerce' ) && is_woocommerce() ) {
+		wp_enqueue_style( 'ldemb-shop', LDEMB_URI . '/assets/css/shop.css', array( 'ldemb-main' ), ldemb_ver( 'assets/css/shop.css' ) );
 	}
 
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
