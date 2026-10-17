@@ -18,6 +18,8 @@ require LDEMB_DIR . '/inc/icons.php';
 require LDEMB_DIR . '/inc/customizer.php';
 require LDEMB_DIR . '/inc/woocommerce.php';
 require LDEMB_DIR . '/inc/template-tags.php';
+require LDEMB_DIR . '/inc/content-types.php';
+require LDEMB_DIR . '/inc/requests.php';
 
 if ( is_admin() ) {
 	require LDEMB_DIR . '/inc/admin.php';

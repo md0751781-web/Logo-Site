@@ -49,6 +49,11 @@ function ldemb_assets() {
 	wp_enqueue_style( 'ldemb-main', LDEMB_URI . '/assets/css/main.css', array( 'ldemb-style' ), LDEMB_VERSION );
 	wp_enqueue_script( 'ldemb-main', LDEMB_URI . '/assets/js/main.js', array(), LDEMB_VERSION, true );
 
+	if ( is_page( array( 'order', 'services', 'portfolio', 'contact' ) ) || is_page_template( array( 'page-order.php', 'page-services.php', 'page-portfolio.php', 'page-contact.php' ) ) ) {
+		wp_enqueue_style( 'ldemb-pages', LDEMB_URI . '/assets/css/pages.css', array( 'ldemb-main' ), LDEMB_VERSION );
+		wp_enqueue_script( 'ldemb-pages', LDEMB_URI . '/assets/js/pages.js', array(), LDEMB_VERSION, true );
+	}
+
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}

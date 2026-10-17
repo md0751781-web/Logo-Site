@@ -28,7 +28,7 @@ function ldemb_page_url( $slugs ) {
 function ldemb_quote_url() {
 	$url = ldemb_mod( 'quote_url' );
 	if ( ! $url ) {
-		$url = ldemb_page_url( array( 'get-quote', 'quote', 'contact' ) );
+		$url = ldemb_page_url( array( 'order', 'get-quote', 'quote', 'contact' ) );
 	}
 	if ( ! $url && ldemb_mod( 'footer_email' ) ) {
 		$url = 'mailto:' . ldemb_mod( 'footer_email' );
@@ -42,9 +42,23 @@ function ldemb_quote_url() {
 function ldemb_upload_url() {
 	$url = ldemb_mod( 'upload_url' );
 	if ( ! $url ) {
-		$url = ldemb_page_url( array( 'upload-your-design', 'upload' ) );
+		$url = ldemb_page_url( array( 'order', 'upload-your-design', 'upload' ) );
 	}
 	return $url ? $url : ldemb_quote_url();
+}
+
+/**
+ * Order page URL, optionally preselecting a design category (?category=…).
+ */
+function ldemb_order_url( $category = '' ) {
+	$url = ldemb_page_url( array( 'order', 'upload-your-design', 'upload' ) );
+	if ( ! $url ) {
+		$url = ldemb_upload_url();
+	}
+	if ( $category && 0 !== strpos( $url, 'mailto:' ) && false === strpos( $url, '#' ) ) {
+		$url = add_query_arg( 'category', rawurlencode( $category ), $url );
+	}
+	return $url;
 }
 
 /**
