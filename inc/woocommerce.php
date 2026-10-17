@@ -246,3 +246,11 @@ function ldemb_shop_sidebar() {
 	</aside>
 	<?php
 }
+
+/**
+ * Shop grid images: WooCommerce's default 'woocommerce_thumbnail' is cropped to a square on the server, which cuts
+ * off tall or wide logos. The uncropped 'woocommerce_single' size is shown whole instead (object-fit: contain).
+ */
+add_filter( 'single_product_archive_thumbnail_size', function () {
+	return 'woocommerce_single';
+} );
