@@ -43,24 +43,30 @@ $ldemb_all      = ldemb_mod( 'products_button' );
 						<?php
 						echo wp_kses_post(
 							$ldemb_product->get_image(
-								'woocommerce_thumbnail',
+								'woocommerce_single',
 								array(
-									'loading'  => $ldemb_i < 4 ? 'eager' : 'lazy',
+									'loading'  => $ldemb_i < 3 ? 'eager' : 'lazy',
 									'decoding' => 'async',
 									'class'    => 'product-card__img',
+									'sizes'    => '(max-width: 640px) 50vw, 340px',
 								)
 							)
 						);
 						?>
+						<?php if ( $ldemb_product->is_downloadable() ) : ?>
+							<span class="product-card__tag"><?php echo ldemb_icon( 'cloud' ); // phpcs:ignore WordPress.Security.EscapeOutput ?><?php esc_html_e( 'Instant download', 'ld-embroidery' ); ?></span>
+						<?php endif; ?>
 					</a>
 					<div class="product-card__body">
 						<h3 class="product-card__title"><a href="<?php echo esc_url( $ldemb_product->get_permalink() ); ?>"><?php echo esc_html( $ldemb_product->get_name() ); ?></a></h3>
-						<p class="product-card__price"><?php echo wp_kses_post( $ldemb_product->get_price_html() ); ?></p>
-						<?php if ( $ldemb_cart && $ldemb_product->is_purchasable() && $ldemb_product->is_in_stock() ) : ?>
-							<a class="btn btn--red btn--sm btn--block" href="<?php echo esc_url( $ldemb_product->add_to_cart_url() ); ?>" rel="nofollow">
-								<?php echo esc_html( $ldemb_cart ); ?><span class="screen-reader-text">: <?php echo esc_html( $ldemb_product->get_name() ); ?></span>
-							</a>
-						<?php endif; ?>
+						<div class="product-card__foot">
+							<p class="product-card__price"><?php echo wp_kses_post( $ldemb_product->get_price_html() ); ?></p>
+							<?php if ( $ldemb_cart && $ldemb_product->is_purchasable() && $ldemb_product->is_in_stock() ) : ?>
+								<a class="btn btn--red" href="<?php echo esc_url( $ldemb_product->add_to_cart_url() ); ?>" rel="nofollow">
+									<?php echo esc_html( $ldemb_cart ); ?><span class="screen-reader-text">: <?php echo esc_html( $ldemb_product->get_name() ); ?></span>
+								</a>
+							<?php endif; ?>
+						</div>
 					</div>
 				</li>
 			<?php endforeach; ?>

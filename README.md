@@ -87,7 +87,7 @@ The hero ("Just $5", "12–24 hours") and the header "24h Turnaround" badge are 
 
 ## Homepage products & importing the catalog
 
-The homepage shows the newest published WooCommerce products between *Services* and the offer banner (*Customize → LD: Home Products*: heading, count, optional category slug, button texts, or switch it off). It needs WooCommerce, products with a price, and hides itself otherwise.
+The homepage shows the newest published WooCommerce products between *Services* and the offer banner (*Customize → LD: Home Products*: heading, count (3 per row on desktop — use 3, 6, 9…), optional category slug, button texts, or switch it off). It needs WooCommerce, products with a price, and hides itself otherwise.
 
 **Import (WooCommerce → Products → Import):** upload the prepared CSV files one at a time (≈250 products each; images are fetched from the URLs in the file, so each file can take a few minutes — if it times out, import again; do not tick "Update existing products" for the first run).
 - The old export only had a *Sale price*; WooCommerce then imports products **without any price**. Prepared files use *Regular price* instead.

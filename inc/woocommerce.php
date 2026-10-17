@@ -103,7 +103,7 @@ function ldemb_home_products() {
 	$args = array(
 		'status'     => 'publish',
 		'visibility' => 'catalog',
-		'limit'      => max( 4, min( 24, absint( ldemb_mod( 'products_count' ) ) ) ),
+		'limit'      => max( 3, min( 24, absint( ldemb_mod( 'products_count' ) ) ) ),
 		'orderby'    => 'date',
 		'order'      => 'DESC',
 	);
