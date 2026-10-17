@@ -2,7 +2,7 @@
 /**
  * Default page.
  *
- * @package Logo_Site
+ * @package LD_Embroidery
  */
 
 get_header();

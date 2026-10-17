@@ -2,7 +2,7 @@
 /**
  * Main template (blog / archives fallback).
  *
- * @package Logo_Site
+ * @package LD_Embroidery
  */
 
 get_header();
@@ -17,13 +17,13 @@ get_header();
 		<h1 class="page-title">
 			<?php
 			/* translators: %s: search query */
-			printf( esc_html__( 'Search results for: %s', 'logo-site' ), '<span>' . esc_html( get_search_query() ) . '</span>' );
+			printf( esc_html__( 'Search results for: %s', 'ld-embroidery' ), '<span>' . esc_html( get_search_query() ) . '</span>' );
 			?>
 		</h1>
 	<?php endif; ?>
 
 	<?php if ( have_posts() ) : ?>
-		<div class="grid grid-3">
+		<div class="posts-grid">
 			<?php
 			while ( have_posts() ) :
 				the_post();
@@ -33,7 +33,7 @@ get_header();
 		</div>
 		<?php the_posts_pagination(); ?>
 	<?php else : ?>
-		<p><?php esc_html_e( 'Nothing found.', 'logo-site' ); ?></p>
+		<p><?php esc_html_e( 'Nothing found.', 'ld-embroidery' ); ?></p>
 		<?php get_search_form(); ?>
 	<?php endif; ?>
 </div>
