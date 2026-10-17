@@ -40,6 +40,7 @@ After activation the Dashboard shows a **"LD Embroidery theme setup"** notice li
 
 | What | Where |
 |---|---|
+| **Logo text** | Customize → **LD: Header → Logo text** (default `Vector|emb`, `|` splits the red/navy colours). Used when no logo image is uploaded, and in the footer. The browser-tab title comes from *Settings → General → Site Title*. |
 | **Logo** | Appearance → Customize → Site Identity → Logo (PNG/SVG/WebP, ~320×96, transparent background). Without it a text + icon fallback is shown. |
 | **Hero photo** | Customize → **LD: Hero Banner → Hero image**. Landscape, at least 1400 px wide, WebP recommended. Set the image's *Alt text* in the Media Library. |
 | **Menu** | Appearance → Menus → create *Home, Services, Pricing, How It Works, Portfolio, Contact* → location **Primary Menu**. The current page is shown in red. |

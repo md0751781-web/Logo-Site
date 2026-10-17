@@ -15,7 +15,7 @@ $ldemb_payments = ldemb_mod( 'footer_payments_show' ) ? ldemb_payment_methods() 
 <footer id="site-footer" class="site-footer">
 	<div class="container">
 		<div class="footer-bar">
-			<p class="footer-copy">&copy; <?php echo esc_html( wp_date( 'Y' ) ); ?> <?php bloginfo( 'name' ); ?></p>
+			<p class="footer-copy">&copy; <?php echo esc_html( wp_date( 'Y' ) ); ?> <?php echo esc_html( ldemb_brand_name() ); ?></p>
 
 			<?php if ( $ldemb_url || $ldemb_email || $ldemb_support ) : ?>
 				<ul class="footer-contact">

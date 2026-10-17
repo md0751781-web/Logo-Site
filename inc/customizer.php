@@ -27,6 +27,7 @@ function ldemb_settings() {
 		'ldemb_header'   => array(
 			'title'  => __( 'LD: Header', 'ld-embroidery' ),
 			'fields' => array(
+				'brand_name'        => array( __( 'Logo text (used when no logo image is uploaded)', 'ld-embroidery' ), 'Vector|emb', 'text', __( 'Use "|" to split the two colours, e.g. Vector|emb (red + navy). Also shown in the footer copyright. Does not change the Site Title in Settings → General.', 'ld-embroidery' ) ),
 				'header_badge_show' => array( __( 'Show turnaround badge', 'ld-embroidery' ), true, 'checkbox' ),
 				'header_badge_text' => array( __( 'Turnaround badge text', 'ld-embroidery' ), __( '24h Turnaround', 'ld-embroidery' ), 'text' ),
 				'header_cta_label'  => array( __( 'Header button text', 'ld-embroidery' ), __( 'Get Quote', 'ld-embroidery' ), 'text' ),

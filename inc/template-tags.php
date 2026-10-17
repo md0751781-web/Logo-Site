@@ -97,8 +97,12 @@ function ldemb_logo() {
 		return;
 	}
 
-	$name  = get_bloginfo( 'name' );
-	$parts = explode( ' ', $name, 2 );
+	$sep   = '';
+	$parts = explode( '|', ldemb_mod( 'brand_name' ), 2 );
+	if ( 1 === count( $parts ) ) {
+		$parts = explode( ' ', $parts[0], 2 );
+		$sep   = ' ';
+	}
 	?>
 	<a class="brand" href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
 		<svg class="brand__mark" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
@@ -109,10 +113,7 @@ function ldemb_logo() {
 			<path d="M39 8c6 3 6 12-2 15s-17 2-20 9" fill="none" stroke="#278D48" stroke-width="2.4" stroke-linecap="round"/>
 		</svg>
 		<span class="brand__text">
-			<span class="brand__first"><?php echo esc_html( $parts[0] ); ?></span>
-			<?php if ( isset( $parts[1] ) ) : ?>
-				<span class="brand__rest"><?php echo esc_html( $parts[1] ); ?></span>
-			<?php endif; ?>
+			<span class="brand__first"><?php echo esc_html( trim( $parts[0] ) ); ?></span><?php if ( isset( $parts[1] ) ) : ?><?php echo esc_html( $sep ); ?><span class="brand__rest"><?php echo esc_html( trim( $parts[1] ) ); ?></span><?php endif; ?>
 		</span>
 	</a>
 	<?php
@@ -186,4 +187,11 @@ function ldemb_hero_image() {
 		esc_url( LDEMB_URI . '/assets/images/hero-placeholder.svg' ),
 		esc_attr__( 'Illustration of a multi-needle embroidery machine stitching a floral design on blue fabric', 'ld-embroidery' )
 	);
+}
+
+/**
+ * Brand name as plain text (no colour separator), for the footer.
+ */
+function ldemb_brand_name() {
+	return trim( str_replace( '|', '', ldemb_mod( 'brand_name' ) ) );
 }
