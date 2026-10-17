@@ -14,6 +14,7 @@ front-page.php                     homepage → template-parts/home/*.php
   template-parts/shop/archive.php    shop + category pages: category sidebar and 4-per-row product grid
   template-parts/home/offer.php      launch offer + file formats (hidden by default)
 inc/customizer.php                 all editable homepage content + defaults
+inc/checkout.php                   details-free checkout (classic checkout forced, fields removed, placeholder email)
 inc/woocommerce.php                cart count, account link, cart fragments, payment methods
 inc/template-tags.php              CTA link resolution, logo, fallback menu, hero image
 inc/icons.php                      inline SVG icons
@@ -110,3 +111,13 @@ The homepage shows the newest published WooCommerce products between *Services* 
 ## Colours
 
 The palette comes from the Vector Emb logo and is defined once in `assets/css/main.css` (`:root`): primary **blue `#0b73bd`** (buttons, links, prices, active menu, category bar, badges), accent **red `#be1c2b`** (sale badge, cart count, required-field and error states), near-black text `#101729` and a deep-blue footer `#0d2a47`. Green is only used for success messages.
+
+## Checkout without customer details
+
+Cart → **Proceed to checkout** goes straight to the payment options: no name, address, phone or account is asked. Switch it with *Customize → LD: Checkout* (**checkout_no_details**; optionally **checkout_ask_email** to ask for just an email).
+- Implemented in `inc/checkout.php`. The block-based checkout cannot be slimmed with filters, so the checkout page is rendered with the classic `[woocommerce_checkout]` form while this is on.
+- Orders with **only downloadable/virtual items** are details-free. If the cart has a physical product, the normal address fields come back automatically.
+- With no email, WooCommerce gets a placeholder `guest-…@guest.invalid` address (needed for download permissions). No receipt or download email is sent to it; the thank-you page shows a notice telling the customer to download the files right away and bookmark the page.
+- Use instant payment gateways. Manual methods (bank transfer, cash) cannot deliver files automatically, and some gateways (e.g. card processors) may demand billing details of their own — test your gateway.
+- Mobile layouts for single product, cart, checkout and order-received are in `assets/css/shop.css`.
+- Verified on real WooCommerce 11.3 + SQLite only; not on MySQL or live gateways. Purge all caches after deploying and check *Appearance → Themes* shows **Version 2.3.0**.

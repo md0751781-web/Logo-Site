@@ -157,6 +157,13 @@ function ldemb_settings() {
 				'ct_success'       => array( __( 'Message after sending', 'ld-embroidery' ), __( 'Thank you! Your message has been received. We will get back to you soon.', 'ld-embroidery' ), 'textarea' ),
 			),
 		),
+		'ldemb_checkout' => array(
+			'title'  => __( 'LD: Checkout', 'ld-embroidery' ),
+			'fields' => array(
+				'checkout_no_details' => array( __( 'Checkout without customer details', 'ld-embroidery' ), true, 'checkbox', __( 'The customer goes straight from the cart to the payment methods: no name, address, phone or account fields. Switch off for WooCommerce\'s standard checkout.', 'ld-embroidery' ) ),
+				'checkout_ask_email'  => array( __( 'Still ask for an email address', 'ld-embroidery' ), false, 'checkbox', __( 'One field. Without it the customer is not emailed a receipt or download link: the files are shown on the order confirmation page only (so use instant payment methods), and some payment gateways may require an email.', 'ld-embroidery' ) ),
+			),
+		),
 		'ldemb_footer'   => array(
 			'title'  => __( 'LD: Footer', 'ld-embroidery' ),
 			'fields' => array(
