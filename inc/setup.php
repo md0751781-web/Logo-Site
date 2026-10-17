@@ -63,7 +63,7 @@ function ldemb_assets() {
 		wp_enqueue_script( 'ldemb-pages', LDEMB_URI . '/assets/js/pages.js', array(), ldemb_ver( 'assets/js/pages.js' ), true );
 	}
 
-	if ( function_exists( 'is_woocommerce' ) && is_woocommerce() ) {
+	if ( function_exists( 'is_woocommerce' ) && ( is_woocommerce() || is_cart() || is_checkout() || is_account_page() ) ) {
 		wp_enqueue_style( 'ldemb-shop', LDEMB_URI . '/assets/css/shop.css', array( 'ldemb-main' ), ldemb_ver( 'assets/css/shop.css' ) );
 	}
 

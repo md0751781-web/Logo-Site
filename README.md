@@ -103,3 +103,6 @@ The homepage shows the newest published WooCommerce products between *Services* 
 - The sidebar lists the product categories with their product counts; sub-categories open inside the active branch. Manage categories under *Products → Categories*.
 - `assets/css/shop.css` deliberately overrides WooCommerce's float/width rules and its `ul.products::before/::after` clear-fix boxes (they would become grid cells).
 - **CSS/JS versions follow each file's modification time** (`?ver=…`), so every deploy is picked up by browsers and caching plugins. If the site still looks unstyled after a deploy, purge the cache plugin / host cache (Hostinger → Cache Manager / LiteSpeed).
+- The shop template was verified against the **real WooCommerce 11.3 source** (not only mock markup): 4 per row at ≥1200 px, AJAX add-to-cart updates the header cart count, WooCommerce's notices wrapper, sorting, result count and pagination all work inside the grid.
+- Product, cart, checkout and account pages get the theme's red buttons, prices and notices (`assets/css/shop.css`).
+- **Deploy check:** *Appearance → Themes → LD Embroidery* should show **Version 2.1.0** (or newer). If the shop still looks different, purge every cache layer (host cache, LiteSpeed/WP Rocket/10Web Booster, Cloudflare) — they can serve old HTML and old CSS bundles.

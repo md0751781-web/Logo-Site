@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'LDEMB_VERSION', '2.0.0' );
+define( 'LDEMB_VERSION', '2.1.0' );
 define( 'LDEMB_DIR', get_template_directory() );
 define( 'LDEMB_URI', get_template_directory_uri() );
 
